@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Cristalización de Salanith</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8e8e8;
+            line-height: 1.7;
+            padding: 0.5em;
+            min-height: 100vh;
+        }
+
+        .parchment {
+            max-width: 900px;
+            margin: 20px auto;
+            background: linear-gradient(45deg, #f4f1e8 0%, #f9f6f0 50%, #f4f1e8 100%);
+            border: 3px solid #8b7355;
+            border-radius: 15px;
+            box-shadow:
+                0 0 30px rgba(139, 115, 85, 0.3),
+                inset 0 0 50px rgba(139, 115, 85, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parchment::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(139, 115, 85, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 115, 85, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .content {
+            padding: 1em;
+            position: relative;
+            z-index: 1;
+            color: #2c1810;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.75em;
+            font-weight: 600;
+            color: #8b2635;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(139, 38, 53, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2em;
+            text-align: center;
+            color: #5d4037;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5em;
+            color: #8b2635;
+            margin: 1em 0 1em 0;
+            border-bottom: 2px solid #8b2635;
+            padding-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(139, 38, 53, 0.2);
+        }
+
+        h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2em;
+            color: #5d4037;
+            margin: 30px 0 15px 0;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid #8b7355;
+            border-radius: 10px;
+            padding: 1.5em;
+            margin: 30px 0;
+            box-shadow: inset 0 0 20px rgba(139, 115, 85, 0.1);
+        }
+
+        .section img {
+            border-radius: 0.5em;
+            border: solid 1px black;
+            width: 20em;
+        }
+
+        .section img.parch {
+            height: 20em;
+            object-fit: contain;
+        }
+
+        .section img.boss{
+            width: 40em;
+        }
+
+        .urgent-box {
+            background: linear-gradient(135deg, rgba(139, 38, 53, 0.1) 0%, rgba(139, 38, 53, 0.05) 100%);
+            border: 3px solid #8b2635;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #8b2635;
+        }
+
+        .progression {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .progression-day {
+            background: rgba(139, 115, 85, 0.1);
+            border: 2px solid #8b7355;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-table th,
+        .timeline-table td {
+            border: 2px solid #8b7355;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .timeline-table th {
+            background: rgba(139, 115, 85, 0.3);
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            color: #2c1810;
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .equipment-item {
+            background: rgba(139, 115, 85, 0.1);
+            border: 2px solid #8b7355;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .equipment-item h4 {
+            font-family: 'Cinzel', serif;
+            color: #5d4037;
+            margin-bottom: 10px;
+        }
+
+        .warning-list {
+            background: rgba(139, 38, 53, 0.1);
+            border-left: 5px solid #8b2635;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .warning-list ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .warning-list li {
+            margin: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .warning-list li::before {
+            content: "⚠";
+            position: absolute;
+            left: 0;
+            color: #8b2635;
+            font-weight: bold;
+        }
+
+        .final-message {
+            background: linear-gradient(135deg, rgba(139, 115, 85, 0.2) 0%, rgba(139, 115, 85, 0.1) 100%);
+            border: 3px solid #8b7355;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+            font-weight: 500;
+            color: #5d4037;
+            font-style: italic;
+        }
+
+        .divider {
+            border: none;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b7355, transparent);
+            margin: 40px 0;
+        }
+
+        strong {
+            color: #8b2635;
+        }
+
+        em {
+            color: #5d4037;
+        }
+
+        .parch {
+            background-image: url(images/Pics/background.jpg);
+        }
+
+        #img_big {
+            margin: auto;
+            border-radius: 0.25em;
+        }
+
+        #img_big .parch {
+            max-height: 80vh;
+        }
+
+        #img_big::backdrop {
+            background: #000000e8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parchment">
+        <div class="content">
+            <h1>La Cristalización de Salanith</h1>
+            <div class="subtitle">Sesión 1</div>
+
+            <hr class="divider">
+
+            <div class="section">
+                <h2>1. Pueblo de pescadores</h2>
+
+                <div class="subsection">
+                    <h3>NPCs / Encuentros</h3>
+                    <ul>
+                        <li>Kuoa Ta (green grungs)</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Estadísticas de los Kuoa Ta (green grungs)</h3>
+                    <table class="resource-table" style="width:100%; border-collapse: collapse; margin-top: 10px;">
+                        <tr style="background-color:#ddd;">
+                            <th style="padding:8px; border:1px solid #aaa;">FRZ</th>
+                            <th style="padding:8px; border:1px solid #aaa;">DEX</th>
+                            <th style="padding:8px; border:1px solid #aaa;">CON</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;text-align: center;">-2</td>
+                            <td style="padding:8px; border:1px solid #aaa;text-align: center;">+2</td>
+                            <td style="padding:8px; border:1px solid #aaa;text-align: center;">+2</td>
+                        </tr>
+                        <tr style="background-color:#ddd;">
+                            <th style="padding:8px; border:1px solid #aaa;">SAB</th>
+                            <th style="padding:8px; border:1px solid #aaa;">INT</th>
+                            <th style="padding:8px; border:1px solid #aaa;">CAR</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;text-align: center;">0</td>
+                            <td style="padding:8px; border:1px solid #aaa;text-align: center;">0</td>
+                            <td style="padding:8px; border:1px solid #aaa;text-align: center;">0</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3>Requisitos para obtener información sobre Kalia Tua</h3>
+                    <ul>
+                        <li><strong>Alimento:</strong> entregar raciones suficientes para 20 días</li>
+                        <li><strong>Pieles:</strong> solo pueden conseguirlas a través de Faramir (punto 2)</li>
+                        <li><strong>Interpretación / Música:</strong> DC 14 para tocar una canción que los conmueva</li>
+                        <li><strong>Intimidación:</strong> DC 12 para atormentarlos y que ayuden</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Recompensas / Información</h3>
+                    <p>Los pescadores proporcionan información relevante sobre Kalia Tua solo si los jugadores cumplen alguno de los requisitos. No combaten.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>Biografía / Contexto narrativo</h3>
+                    <ul>
+                        <li>Han vivido toda su vida cerca del lago donde pescan</li>
+                        <li>No han explorado mucho más de la isla por ser presa fácil</li>
+                        <li>Conocen a Kalia Tua de su época como misionero</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Notas adicionales según orden de llegada</h3>
+                    <ul>
+                        <li><strong>Si es el primer lugar que visitan:</strong> deben cumplir alguno de los requisitos para recibir información</li>
+                        <li><strong>Si vienen después de visitar otra zona:</strong> la interacción es la misma, pero se mantiene la necesidad de cumplir requisitos para obtener información</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="section">
+                <h2>2. Bosque de los Silbidos</h2>
+
+                <div class="subsection">
+                    <h3>NPCs / Encuentros</h3>
+                    <ul>
+                        <li>Faramir, cazador corrompido (vive en la choza en las afueras del bosque)</li>
+                        <li>El Silbador (criatura peligrosa en el bosque)</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Encuentros y Decisiones</h3>
+                    <ul>
+                        <li>Antes de entrar al bosque se encuentran con la choza de Faramir</li>
+                        <li>Faramir pide ayuda para cazar al Silbador; sabe dónde vive pero no puede eliminarlo solo</li>
+                        <li>Si los jugadores pasan primero por el Pueblo de los Pescadores, siempre que vayan a otra locación se encuentran con Faramir en el bosque pidiendo ayuda</li>
+                        <li>Se lo puede intimidar para que revele donde está el culto de los sacerdotes</li>
+                        <li>Premio por ayudarlo:
+                            <ul>
+                                <li>Pieles y comida (útil para recibir ayuda del pueblo de los pescadores)</li>
+                                <li>Información sobre el culto de los sacerdotes (tienen su base en el Faro Olvidado)</li>
+                            </ul>
+                        </li>
+                        <li>Si no pasaron por la aldea de los pescadores: Direcciones a la casa de Kalia Tua (Pantano) y una pequeña flauta de cristal</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Decisiones y Recompensas</h3>
+                    <ul>
+                        <li><strong>Ayudar a Faramir:</strong> los jugadores reciben:
+                            <ul>
+                                <li>10 pieles</li>
+                                <li>Raciones para 20 días</li>
+                                <li>Una flauta de cristal</li>
+                            </ul>
+                        </li>
+                        <li><strong>Matar al Silbador sin ayudar a Faramir:</strong> no obtienen loot ni recompensas</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Biografía / Contexto narrativo</h3>
+                    <ul>
+                        <li>El bosque de los silbidos es un lugar peligroso; solo los más temerarios deciden explorarlo</li>
+                        <li>Faramir, que vive en las afueras, ha visto cómo la vida salvaje se ha vuelto cada vez menos activa y está buscando eliminar a la raíz del problema</li>
+                        <li>Faramir escapó por poco del Silbador y necesita ayuda para enfrentarlo</li>
+                        <li>Ha preparado una trampa: capturó a un Kuoa Ta y lo dejó como alimento para el Silbador, confiando en que la piel venenosa afecte a la criatura</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Notas adicionales según orden de llegada</h3>
+                    <ul>
+                        <li><strong>Si vienen después del Pueblo de los Pescadores:</strong> Faramir puede proporcionar las pieles necesarias para cumplir los requisitos del pueblo</li>
+                        <li><strong>Si este es el primer lugar que visitan:</strong> los jugadores encuentran a Faramir en las afueras del bosque pidiendo ayuda con el Silbador.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="section">
+                <h2>4. La Casa de Kalia Tua</h2>
+
+                <div class="subsection">
+                    <h3>Contexto / Roleplay</h3>
+                    <p>Kalia Tua solía ser un antiguo sacerdote de los selenithas, pero ya no más. Su casa sirve como punto de encuentro y guía para los aventureros. Independientemente de lo que hagan los jugadores, Kalia Tua los ayudará a llegar al faro, ofreciendo información valiosa sobre los selenithas.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>Información que puede proporcionar</h3>
+                    <ul>
+                        <li>Valiosa información sobre la tumba y el bosque</li>
+                        <li>Si se le interroga correctamente, puede revelar información sobre el mago</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Encuentros / Condicionales</h3>
+                    <ul>
+                        <li><strong>Si los jugadores vienen directo a la casa:</strong> son atacados por el Silbador a las afueras del bosque</li>
+                        <li><strong>Si primero visitaron el Pueblo de Pescadores:</strong> Kalia los acompaña hacia el faro</li>
+                        <li><strong>Si ayudaron a Faramir en el bosque:</strong> Kalia los acompaña hacia el faro</li>
+                        <li><strong>Si Kalia los acompaña al faro:</strong> los jugadores obtiene ventaja para intentar convencer a los selenithas de que los dejen entrar a la tumba</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="section">
+                <h2>3. El Faro Olvidado</h2>
+
+                <div class="subsection">
+                    <h3>Contexto / Ambiente</h3>
+                    <p>Sobre las ruinas del faro, los Selenithas —una raza de sapos cubiertos parcial o completamente por cristales— han establecido su base. Allí se encuentra también el pasaje secreto a la tumba del mago.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>Encuentros y Condicionales</h3>
+                    <ul>
+                        <li>Al llegar, los jugadores son recibidos por guardias armados que consultan sus intenciones, dependiendo de si vienen solos o acompañados por Kalia Tua</li>
+                        <li>Si los jugadores deciden venir directo hacia el Faro sin pasar por otras locaciones, son atacados por el Silbador</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Opciones para acceder a la tumba del mago</h3>
+                    <ul>
+                        <li><strong>Diplomacia:</strong> convencer a los guardianes de los Selenithas para que los dejen pasar</li>
+                        <li><strong>Combate:</strong> abrirse camino luchando contra los Selenithas</li>
+                        <li><strong>Sigilo:</strong> escabullirse y entrar sin ser detectados</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="section">
+                <h2>Diplomacia en el Faro Olvidado</h2>
+
+                <div class="subsection">
+                    <h3>Los 7 Guardianes del Santuario</h3>
+                    <ul>
+                        <li><strong>Sacerdote Veylthar</strong> (líder espiritual) - Solemne e inflexible, habla como si recitara escrituras.</li>
+                        <li><strong>Sira de los Ecos</strong> (sacerdotisa-cantora) - Mística y fatalista, habla con metáforas sobre destino y equilibrio.</li>
+                        <li><strong>Brugg el Guardián</strong> (jefe de guerreros) - Directo y agresivo, no cree en la diplomacia.</li>
+                        <li><strong>Thamril el Viejo</strong> (consejero) - Sabio, desconfiado con los forasteros.</li>
+                        <li><strong>Jorra el Joven</strong> (aprendiz/novicio) - Ingenuo, con dudas, busca mostrar lealtad.</li>
+                        <li><strong>Karesh el Quebrado</strong> (herido de antiguas batallas) - Resentido, amargado, cicatrices de cristal.</li>
+                        <li><strong>Myrrha la Guardiana Silente</strong> (guardiana espiritual) - Casi no habla, frases breves y duras.</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Frases para Roleplay</h3>
+                    <p>Los PNJs tienen distintas líneas que reflejan sus personalidades y su postura frente a los aventureros. Aquí algunas destacadas:</p>
+                    <ul>
+                        <li><strong>Sacerdote Veylthar:</strong> "El Corazón no es un remedio, es un fragmento del alma de Salanith. Tomarlo es herejía."</li>
+                        <li><strong>Sira de los Ecos:</strong> "El cristal en la niña es el canto del destino, ¿por qué negarlo?"</li>
+                        <li><strong>Brugg el Guardián:</strong> "¡No hay negociación! El Corazón no se toca."</li>
+                        <li><strong>Thamril el Viejo:</strong> "¿Salvar a la niña? ¿O codiciar el poder del Corazón?"</li>
+                        <li><strong>Jorra el Joven:</strong> "Mi maestro me enseñó que el Corazón da, pero también devora. ¿Y si mata a la niña igual?"</li>
+                        <li><strong>Karesh el Quebrado:</strong> "Mirad mis cicatrices: el Corazón no trae sanación, solo dolor."</li>
+                        <li><strong>Myrrha la Silente:</strong> "El Corazón es el latido de la isla. Si lo quitáis, ella muere."</li>
+                    </ul>
+                </div>
+
+                <!-- <div class="subsection">
+                    <h3>Niveles de Dificultad (DC) para Convencer</h3>
+                    <ul>
+                        <li>Sacerdote Veylthar (líder, muy rígido): [DC] Persuación (16) - Intimidación (14) - Engaño (12)</li>
+                        <li>Sira de los Ecos (fervorosa, mística): [DC] Persuación (12) - Intimidación (12) - Engaño (15)</li>
+                        <li>Brugg el Guardián (protector, agresivo): [DC] Persuación (14) - Intimidación (16) - Engaño (14)</li>
+                        <li>Thamril el Viejo (desconfiado): [DC] Persuación (14) - Intimidación (10) - Engaño (16)</li>
+                        <li>Jorra el Joven (ingenuo): [DC] Persuación (10) - Intimidación (8) - Engaño (8)</li>
+                        <li>Karesh el Quebrado (resentido) [DC] Persuación (15) - Intimidación (16) - Engaño (9)</li>
+                        <li>Myrrha la Silente (silente y firme): [DC] Persuación (14) - Intimidación (13) - Engaño (14)</li>
+                    </ul>
+                </div> -->
+                <div class="subsection">
+                    <h3>DCs de Diplomacia / Interacción - Faro Olvidado</h3>
+                    <table class="resource-table" style="width:100%; border-collapse: collapse; margin-top: 10px;font-size:0.75em">
+                        <tr style="background-color:#ddd;">
+                            <th style="padding:8px; border:1px solid #aaa;">PNJ</th>
+                            <th style="padding:8px; border:1px solid #aaa;">Persuasión (DC)</th>
+                            <th style="padding:8px; border:1px solid #aaa;">Intimidación (DC)</th>
+                            <th style="padding:8px; border:1px solid #aaa;">Engaño (DC)</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;">Sacerdote Veylthar (líder rígido)</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">16</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">14</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">12</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;">Sira de los Ecos (fervorosa)</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">12</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">12</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">15</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;">Brugg el Guardián (agresivo)</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">14</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">16</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">14</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;">Thamril el Viejo (desconfiado)</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">14</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">10</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">16</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;">Jorra el Joven (ingenuo)</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">10</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">8</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">8</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;">Karesh el Quebrado (resentido)</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">15</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">16</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">9</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #aaa;">Myrrha la Silente (firme)</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">14</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">13</td>
+                            <td style="padding:8px;text-align:center; border:1px solid #aaa;">14</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="section">
+                <h2>Etapas del Infiltramiento</h2>
+
+                <div class="subsection">
+                    <h3>1. Observación (Preparación)</h3>
+                    <p><strong>Tirada:</strong> Percepción o Investigación (DC 12 - 14)</p>
+                    <p><strong>Objetivo:</strong> detectar cuántos guardianes vigilan, turnos de patrulla, zonas más oscuras.</p>
+                    <p><strong>Éxito:</strong> obtienen ventaja en la primera tirada de Sigilo.</p>
+                    <p><strong>Fracaso:</strong> pasan algo por alto (ej. un guardián oculto, un charco de agua cristalina que hace ruido al pisar).</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>2. Avance por la zona exterior</h3>
+                    <p><strong>Tirada:</strong> Sigilo grupal (cada uno tira, la mitad debe superar DC 13)</p>
+                    <p><strong>Escenario:</strong> moverse entre charcos, raíces y pilares de cristal que crujen al tocarlos.</p>
+                    <p><strong>Complicación:</strong> si alguien falla por 5 o más, provoca un ruido → los guardianes pasan a estado de alerta, aumentando todas las DCs en +2.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>3. Punto de control (guardia frontal)</h3>
+                    <p>Hay dos guardianes hablando frente al portal del santuario.</p>
+                    <p><strong>Opciones:</strong></p>
+                    <ul>
+                        <li>Sigilo (DC 14): rodearlos o esperar el momento exacto para pasar.</li>
+                        <li>Engaño (DC 13): disfraz, distracción, imitación de sonidos.</li>
+                        <li>Magia creativa: ilusiones, invisibilidad, etc.</li>
+                    </ul>
+                    <p><strong>Éxito:</strong> pasan sin ser vistos.</p>
+                    <p><strong>Fracaso:</strong> uno de los guardianes queda intrigado → puede seguirlos o dar la alarma al mínimo indicio.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>4. Entrada al Santuario</h3>
+                    <p><strong>Tirada:</strong> Sigilo grupal (DC 12 - 14 según estado de alerta de los guardianes)</p>
+                    <p><strong>Descripción:</strong> puertas enormes de obsidiana, grabadas con runas brillantes, se abren lentamente con un chirrido.</p>
+                    <p><strong>Éxito:</strong> logran entrar sin levantar sospechas.</p>
+                    <p><strong>Fracaso:</strong> los guardianes descubren la intrusión → combate dentro del umbral del santuario.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>⚖️ Posibles Resultados</h3>
+                    <ul>
+                        <li><strong>Éxito perfecto:</strong> entran sin que nadie se dé cuenta.</li>
+                        <li><strong>Éxito parcial:</strong> 1 etapa fallida, entran pero con guardianes en estado de alerta → más peligro si luego intentan huir.</li>
+                        <li><strong>Fracaso total:</strong> 2 o más fallos → combate inmediato en la entrada.</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>🔑 Claves para hacerlo dinámico</h3>
+                    <ul>
+                        <li>Da pistas visuales/sonoras para que los jugadores decidan qué habilidad usar, no solo Sigilo.</li>
+                        <li>Premia la creatividad mágica (disfrazarse, Silencio, Paso sin rastro, etc.).</li>
+                        <li>Mete tensión narrativa: describe los ruidos, las sombras, el sonido del cristal crujiendo bajo los pies.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Criaturas</h2>
+                <img src="images/defensor_sapo.png" alt="">
+                <img src="images/emboscador_sapo.png" alt="">
+                <img src="images/sapo_mortero.png" alt="">
+                <img class="boss" src="images/comandante_sapo.png" alt="">
+                <img class="boss" src="images/silbador.png" alt="">
+            </div>
+
+            <div class="section">
+                <h2>Imagenes</h2>
+                <img class="parch" src="images/Pics/Brujo__Sapo.png" alt="">
+                <img class="parch" src="images/Pics/Golem.png" alt="">
+                <img class="parch" src="images/Pics/Hechicero__Sapo.png" alt="">
+                <img class="parch" src="images/Pics/Silbador.png" alt="">
+                <img class="parch" src="images/Pics/Luchador__Sapo.png" alt="">
+                <img class="parch" src="images/Pics/Luchador__Corrupto.png" alt="">
+                <img class="parch" src="images/Pics/Soldado__Sapo.png" alt="">
+                <img class="parch" src="images/Pics/Soldado__Corrupto.png" alt="">
+                <img class="parch" src="images/Pics/Guerrero__Sapo.png" alt="">
+                <img class="parch" src="images/Pics/Tanque__Sapo.png" alt="">
+                <img class="parch" src="images/Pics/Tanque__Corrupto.png" alt="">
+                <img class="parch" src="images/Pics/Capitan__Sapo.png" alt="">
+                <img class="parch" src="images/Pics/Capitan__Corrupto.png" alt="">
+                <img class="parch" src="images/Pics/Faramir.png" alt="">
+                <img class="parch" src="images/Pics/Anciano.png" alt="">
+            </div>
+
+            <dialog id="img_big">
+                <img class="parch" src="" alt="">
+            </dialog>
+</body>
+
+<script>
+    let images = document.querySelectorAll('img');
+    let imgBig = document.getElementById('img_big');
+
+    images.forEach(img => {
+        img.addEventListener('click', ()=>{
+            imgBig.querySelector('img').src = img.src;
+            imgBig.showModal();
+        })
+    });
+
+    imgBig.addEventListener('click', ()=>{
+        imgBig.close();
+    })
+
+</script>
+
+</html>
