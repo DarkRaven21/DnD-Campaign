@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Divisas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .flag {
+            font-size: 24px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .result {
+            background: #f0f4ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .highlight {
+            color: #667eea;
+            font-size: 20px;
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #667eea, transparent);
+            margin: 15px 0;
+        }
+        
+        .conversion-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .conversion-card h2 {
+            color: white;
+        }
+        
+        .conversion-card label {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .conversion-card input {
+            background: rgba(255,255,255,0.95);
+        }
+        
+        .conversion-result {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .conversion-result div {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+        
+        .payment-section {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .change-result {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💱 Calculadora de Divisas</h1>
+        
+        <!-- Cotización Peso Argentino -->
+        <div class="card">
+            <h2><span class="flag">🇦🇷</span> Peso Argentino</h2>
+            <div class="input-group">
+                <label>¿Cuántos pesos argentinos vale 1 peso uruguayo?</label>
+                <input type="number" id="arsRate" placeholder="Ej: 40" step="0.01">
+            </div>
+        </div>
+        
+        <!-- Cotización Real Brasileño -->
+        <div class="card">
+            <h2><span class="flag">🇧🇷</span> Real Brasileño</h2>
+            <div class="input-group">
+                <label>¿Cuántos pesos uruguayos vale 1 real brasileño?</label>
+                <input type="number" id="brlRate" placeholder="Ej: 10" step="0.01">
+            </div>
+        </div>
+        
+        <!-- Conversión de Compra -->
+        <div class="card conversion-card">
+            <h2>🛒 Conversión de Compra</h2>
+            <div class="input-group">
+                <label>¿Cuánto vale la compra en pesos uruguayos?</label>
+                <input type="number" id="purchaseAmount" placeholder="Ej: 500" step="0.01">
+            </div>
+            <div class="conversion-result" id="conversionResult">
+                <div>En pesos argentinos: -</div>
+                <div>En reales brasileños: -</div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="payment-section">
+                <div class="input-group">
+                    <label style="color: #856404;">Me están pagando con:</label>
+                    <select id="paymentCurrency" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #e0e0e0; font-size: 16px; margin-bottom: 10px;">
+                        <option value="">Selecciona moneda</option>
+                        <option value="ars">🇦🇷 Pesos Argentinos</option>
+                        <option value="brl">🇧🇷 Reales Brasileños</option>
+                    </select>
+                    <input type="number" id="paymentAmount" placeholder="Cantidad recibida" step="0.01">
+                </div>
+                <div class="change-result" id="changeResult">-</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const arsRate = document.getElementById('arsRate');
+        const brlRate = document.getElementById('brlRate');
+        const purchaseAmount = document.getElementById('purchaseAmount');
+        const conversionResult = document.getElementById('conversionResult');
+        const paymentCurrency = document.getElementById('paymentCurrency');
+        const paymentAmount = document.getElementById('paymentAmount');
+        const changeResult = document.getElementById('changeResult');
+
+        function calculateConversion() {
+            const uyu = parseFloat(purchaseAmount.value);
+            const arsR = parseFloat(arsRate.value);
+            const brlR = parseFloat(brlRate.value);
+            
+            if (uyu && arsR && brlR) {
+                const inARS = uyu * arsR;
+                const inBRL = uyu / brlR;
+                
+                conversionResult.innerHTML = `
+                    <div>🇦🇷 En pesos argentinos: <strong>${inARS.toFixed(2)} ARS</strong></div>
+                    <div>🇧🇷 En reales brasileños: <strong>${inBRL.toFixed(2)} BRL</strong></div>
+                `;
+            } else {
+                conversionResult.innerHTML = `
+                    <div>En pesos argentinos: -</div>
+                    <div>En reales brasileños: -</div>
+                `;
+            }
+            calculateChange();
+        }
+
+        function calculateChange() {
+            const uyu = parseFloat(purchaseAmount.value);
+            const currency = paymentCurrency.value;
+            const payment = parseFloat(paymentAmount.value);
+            const arsR = parseFloat(arsRate.value);
+            const brlR = parseFloat(brlRate.value);
+            
+            if (uyu && currency && payment && arsR && brlR) {
+                let paymentInUYU = 0;
+                
+                if (currency === 'ars') {
+                    paymentInUYU = payment / arsR;
+                } else if (currency === 'brl') {
+                    paymentInUYU = payment * brlR;
+                }
+                
+                const change = paymentInUYU - uyu;
+                
+                if (change >= 0) {
+                    changeResult.innerHTML = `💵 Vuelto: <span style="font-size: 24px;">${change.toFixed(2)} UYU</span>`;
+                    changeResult.style.background = '#d4edda';
+                    changeResult.style.color = '#155724';
+                } else {
+                    changeResult.innerHTML = `⚠️ Falta: <span style="font-size: 24px;">${Math.abs(change).toFixed(2)} UYU</span>`;
+                    changeResult.style.background = '#f8d7da';
+                    changeResult.style.color = '#721c24';
+                }
+            } else {
+                changeResult.textContent = '-';
+                changeResult.style.background = '#d4edda';
+                changeResult.style.color = '#155724';
+            }
+        }
+
+        arsRate.addEventListener('input', calculateConversion);
+        brlRate.addEventListener('input', calculateConversion);
+        purchaseAmount.addEventListener('input', calculateConversion);
+        paymentCurrency.addEventListener('change', calculateChange);
+        paymentAmount.addEventListener('input', calculateChange);
+    </script>
+</body>
+</html>
